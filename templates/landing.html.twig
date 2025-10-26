@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block styles %}
+<link rel="stylesheet" href="/css/Landing.css">
+{% endblock %}
+
+{% block content %}
+<main class="landing-container">
+  <section class="hero" aria-labelledby="hero-heading">
+    <h1 id="hero-heading">Welcome to TicketApp</h1>
+    <p>Manage your tickets easily and efficiently!</p>
+
+    <div class="action-buttons">
+      <a href="/auth/login" class="btn login">Login</a>
+      <a href="/auth/signup" class="btn get-started">Get Started</a>
+    </div>
+
+    <div class="circle circle1" aria-hidden="true"></div>
+    <div class="circle circle2" aria-hidden="true"></div>
+
+    <svg class="wave" viewBox="0 0 1440 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill="#4f46e5" d="M0,0 C480,150 960,0 1440,150 L1440,0 L0,0 Z"></path>
+    </svg>
+  </section>
+</main>
+{% endblock %}

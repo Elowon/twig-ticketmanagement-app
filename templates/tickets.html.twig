@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block styles %}
+  <link rel="stylesheet" href="/css/tickets.css">
+{% endblock %}
+
+{% block content %}
+<main class="ticket-container">
+  <h1>Ticket Management</h1>
+
+  <form class="ticket-form" method="POST" action="/tickets{% if ticket.id is defined %}/edit/{{ ticket.id }}{% endif %}">
+    <h2>{{ ticket.id is defined ? 'Edit Ticket' : 'Create Ticket' }}</h2>
+
+    <label for="title">Title*</label>
+    <input type="text" id="title" name="title" value="{{ ticket.title|default('') }}" placeholder="Ticket title" required>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" placeholder="Ticket description" required>{{ ticket.description|default('') }}</textarea>
+
+    <label for="status">Status*</label>
+    <select id="status" name="status" required>
+      <option value="open" {% if ticket.status == 'open' %}selected{% endif %}>Open</option>
+      <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+      <option value="closed" {% if ticket.status == 'closed' %}selected{% endif %}>Closed</option>
+    </select>
+
+    <button type="submit">{{ ticket.id is defined ? 'Update Ticket' : 'Create Ticket' }}</button>
+  </form>
+
+  <section class="ticket-list">
+    <h2>Existing Tickets</h2>
+    {% if tickets is empty %}
+      <p>No tickets yet.</p>
+    {% else %}
+      {% for t in tickets %}
+        <article class="ticket-card {{ t.status }}">
+          <h3>{{ t.title }}</h3>
+          <p>{{ t.description }}</p>
+          <span class="status">{{ t.status|capitalize }}</span>
+          <div class="actions">
+            <a href="/tickets/edit/{{ t.id }}"><button type="button">Edit</button></a>
+            <a href="/tickets/delete/{{ t.id }}"><button type="button" class="delete-btn">Delete</button></a>
+          </div>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

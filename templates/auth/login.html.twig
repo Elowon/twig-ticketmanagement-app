@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login - TicketApp{% endblock %}
+
+{# Include the matching CSS for this page #}
+{% block styles %}
+  <link rel="stylesheet" href="/css/Login.css">
+{% endblock %}
+
+{% block content %}
+<main class="login-container">
+  <form class="login-form" method="POST" action="/auth/login" aria-labelledby="login form">
+    <h1>Login</h1>
+
+    <label for="email">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      placeholder="Enter your email"
+      value="{{ email|default('') }}"
+      required
+    >
+
+    <label for="password">Password</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="Enter your password"
+      required
+    >
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <button type="submit">Login</button>
+
+    <p>
+      Don’t have an account? <a href="/auth/signup">Sign up</a>
+    </p>
+  </form>
+</main>
+{% endblock %}

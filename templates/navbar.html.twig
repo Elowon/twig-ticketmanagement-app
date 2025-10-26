@@ -1,0 +1,71 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo">TicketApp</a>
+
+    <ul class="nav-links">
+      {% if session.ticketapp_session %}
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/tickets">Tickets</a></li>
+        {# Logout removed #}
+      {% else %}
+        <li><a href="#" class="requires-login" data-target="/dashboard">Dashboard</a></li>
+        <li><a href="#" class="requires-login" data-target="/tickets">Tickets</a></li>
+        <li><a href="/auth/signup" class="signup-btn">Get Started</a></li>
+      {% endif %}
+    </ul>
+
+    <button class="hamburger" id="mobile-toggle" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <ul class="mobile-menu" id="mobile-menu">
+    {% if session.ticketapp_session %}
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/tickets">Tickets</a></li>
+      {# Logout removed #}
+    {% else %}
+      <li><a href="#" class="requires-login" data-target="/dashboard">Dashboard</a></li>
+      <li><a href="#" class="requires-login" data-target="/tickets">Tickets</a></li>
+      <li><a href="/auth/signup" class="signup-btn">Get Started</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+<script>
+  const toggleButton = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenu.style.maxHeight = '0';
+  mobileMenu.style.overflow = 'hidden';
+  mobileMenu.style.transition = 'max-height 0.3s ease-out';
+
+  toggleButton.addEventListener('click', () => {
+    if (mobileMenu.style.maxHeight === '0px' || mobileMenu.style.maxHeight === '0') {
+      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+    } else {
+      mobileMenu.style.maxHeight = '0';
+    }
+  });
+
+  // Close mobile menu when a link is clicked
+  const mobileLinks = mobileMenu.querySelectorAll('a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.style.maxHeight = '0';
+    });
+  });
+
+  // Handle clicks on links that require login
+  const loginLinks = document.querySelectorAll('.requires-login');
+  loginLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('data-target');
+      alert("You need to login first!");
+      window.location.href = "/auth/login?next=" + encodeURIComponent(target);
+    });
+  });
+</script>

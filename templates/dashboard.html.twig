@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block styles %}
+  <link rel="stylesheet" href="/css/Dashboard.css">
+{% endblock %}
+
+{% block content %}
+<main class="dashboard-container">
+
+  <header class="dashboard-header">
+    <h1>Dashboard</h1>
+    <form method="POST" action="/logout" style="display:inline;">
+      <button type="submit" class="logout-btn">Logout</button>
+    </form>
+  </header>
+
+  <section class="stats-container">
+    <article class="stat-card open">
+      <h3>Open Tickets</h3>
+      <p>{{ open }}</p>
+    </article>
+    <article class="stat-card in_progress">
+      <h3>In Progress</h3>
+      <p>{{ in_progress }}</p>
+    </article>
+    <article class="stat-card closed">
+      <h3>Closed Tickets</h3>
+      <p>{{ closed }}</p>
+    </article>
+    <article class="stat-card total">
+      <h3>Total Tickets</h3>
+      <p>{{ total }}</p>
+    </article>
+  </section>
+
+  <div class="ticket-link">
+    <a href="/tickets">
+      <button>Go to Ticket Management</button>
+    </a>
+  </div>
+
+</main>
+{% endblock %}

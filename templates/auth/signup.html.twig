@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up - TicketApp{% endblock %}
+
+{# Include the same CSS styling as React’s Auth.css #}
+{% block styles %}
+  <link rel="stylesheet" href="/css/Auth.css">
+{% endblock %}
+
+{% block content %}
+<main class="auth-container">
+  <form class="auth-form" method="POST" action="/auth/signup">
+    <h1>Signup</h1>
+
+    <label for="email">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="text"
+      value="{{ email|default('') }}"
+      placeholder="Enter email"
+      required
+    >
+
+    <label for="password">Password</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="Enter password"
+      required
+    >
+
+    <label for="confirm_password">Confirm Password</label>
+    <input
+      id="confirm_password"
+      name="confirm_password"
+      type="password"
+      placeholder="Confirm password"
+      required
+    >
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <button type="submit">Sign up</button>
+
+    <p>
+      Already have an account?
+      <a href="/auth/login">Login</a>
+    </p>
+  </form>
+</main>
+{% endblock %}

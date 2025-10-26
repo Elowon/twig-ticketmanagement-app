@@ -1,0 +1,125 @@
+
+.navbar {
+    background-color: #1e3a8a; 
+    color: #fff;
+    font-family: Arial, sans-serif;
+    position: fixed;   
+    top: 0;            
+    left: 0;          
+    width: 100%;       
+    z-index: 1000;    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+
+
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem; 
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  text-shadow: 2px 2px 2px rgb(88, 61, 61);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 1.5rem; 
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #f0a500;
+}
+
+.signup-btn {
+    background-color: #f0a500;
+    color: #007BFF;
+    padding: 0.4rem 0.8rem; 
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.signup-btn:hover {
+    background-color: #fff;
+    color: #1e3a8a;
+}
+
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.hamburger span {
+    height: 3px;
+    width: 25px;
+    background-color: white;
+    margin: 4px 0;
+    transition: all 0.3s;
+}
+
+
+.mobile-menu {
+    display: none; 
+    flex-direction: column;
+    list-style: none;
+    background-color: #1e3a8a; 
+    overflow: hidden;
+}
+
+.mobile-menu li {
+    border-top: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.mobile-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1rem; 
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.mobile-menu a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .hamburger {
+        display: flex;
+    }
+    .mobile-menu {
+        display: flex;
+        flex-direction: column;
+    }
+}

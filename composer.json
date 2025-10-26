@@ -1,0 +1,6 @@
+{
+    "name": "mr-elowon/ticket-twig",
+    "require": {
+        "twig/twig": "^3.21"
+    }
+}
