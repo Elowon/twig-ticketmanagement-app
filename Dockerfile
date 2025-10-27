@@ -2,27 +2,34 @@
 FROM php:8.2-apache
 
 # Install system dependencies for Composer
-RUN apt-get update && apt-get install -y unzip git && \
+RUN apt-get update && apt-get install -y unzip git curl && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Enable Apache mod_rewrite (needed for clean URLs)
+# Enable Apache modules
 RUN a2enmod rewrite
 
-# Copy the entire app into the container
+# Copy app
 COPY . /var/www/html/
 
 # Set working directory
 WORKDIR /var/www/html/
 
-# Make Apache serve files from 'public' folder
+# Install PHP dependencies
+RUN composer install
+
+# Configure Apache
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 RUN sed -i 's|<Directory /var/www/>|<Directory /var/www/html/public>|g' /etc/apache2/apache2.conf
 
-# Install PHP dependencies using Composer
-RUN composer install
+# Allow .htaccess to work
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Expose port 10000 (Render uses this)
+# Use Render port
+ENV PORT 10000
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
+
+# Expose port
 EXPOSE 10000
 
-# Start Apache in the foreground
+# Start Apache
 CMD ["apache2-foreground"]
