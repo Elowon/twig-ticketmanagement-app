@@ -5,6 +5,19 @@ error_reporting(E_ALL);
 
 session_start();
 
+
+$usersFile = '/tmp/users.json';
+$usersFile = '/tmp/tickets.json';
+
+if (!file_exists($usersFile)) {
+    file_put_contents($usersFile, json_encode([]));
+}
+
+if (!file_exists($ticketsFile)) {
+    file_put_contents($ticketsFile, json_encode([]));
+}
+
+
 $session_timeout = 1 * 60;
 
 if (isset($_SESSION['ticketapp_session']) && isset($_SESSION['last_activity'])) {
@@ -55,7 +68,7 @@ if ($path === '/auth/signup') {
             exit;
         }
 
-        $usersFile = '/tmp/users.json';
+       
         $users = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
 
         foreach ($users as $user) {
@@ -192,7 +205,7 @@ if (strpos($path, '/tickets') === 0) {
         exit;
     }
 
-    $usersFile = '/tmp/tickets.json';
+    
     $tickets = file_exists($ticketsFile) ? json_decode(file_get_contents($ticketsFile), true) : [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
