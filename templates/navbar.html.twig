@@ -6,7 +6,7 @@
       {% if session.ticketapp_session %}
         <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/tickets">Tickets</a></li>
-        {# Logout removed #}
+        
       {% else %}
         <li><a href="#" class="requires-login" data-target="/dashboard">Dashboard</a></li>
         <li><a href="#" class="requires-login" data-target="/tickets">Tickets</a></li>
@@ -25,7 +25,7 @@
     {% if session.ticketapp_session %}
       <li><a href="/dashboard">Dashboard</a></li>
       <li><a href="/tickets">Tickets</a></li>
-      {# Logout removed #}
+      
     {% else %}
       <li><a href="#" class="requires-login" data-target="/dashboard">Dashboard</a></li>
       <li><a href="#" class="requires-login" data-target="/tickets">Tickets</a></li>
@@ -50,7 +50,6 @@
     }
   });
 
-  // Close mobile menu when a link is clicked
   const mobileLinks = mobileMenu.querySelectorAll('a');
   mobileLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -58,7 +57,6 @@
     });
   });
 
-  // Handle clicks on links that require login
   const loginLinks = document.querySelectorAll('.requires-login');
   loginLinks.forEach(link => {
     link.addEventListener('click', (e) => {
