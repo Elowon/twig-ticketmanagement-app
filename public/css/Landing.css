@@ -144,6 +144,7 @@ footer {
 
   footer {
     margin-top: auto; 
+    text-align: center; 
   }
   .hero {
     padding: 40px 40px 280px;
@@ -159,8 +160,10 @@ footer {
     height: 280px;
   }
   .circle2 {
-    width: 200px;
-    height: 200px;
+     bottom: 320px;
+    right: 10px; 
+    width: 160px;
+    height: 160px;
   }
 }
 
@@ -177,6 +180,7 @@ footer {
 
   footer {
     margin-top: auto; 
+    text-align: center; 
   }
   .hero {
     padding: 40px 40px 280px;
@@ -192,8 +196,10 @@ footer {
     height: 280px;
   }
   .circle2 {
-    width: 200px;
-    height: 200px;
+    bottom: 320px;
+    right: 10px; 
+    width: 160px;
+    height: 160px;
   }
 }
 
