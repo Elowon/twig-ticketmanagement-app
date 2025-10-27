@@ -5,13 +5,10 @@ error_reporting(E_ALL);
 
 session_start();
 
-// ----------------------
-// Use /tmp for JSON files
-// ----------------------
 $usersFile = sys_get_temp_dir() . '/users.json';
 $ticketsFile = sys_get_temp_dir() . '/tickets.json';
 
-// Ensure the files exist
+
 if (!file_exists($usersFile)) {
     file_put_contents($usersFile, json_encode([]));
 }
@@ -19,10 +16,7 @@ if (!file_exists($ticketsFile)) {
     file_put_contents($ticketsFile, json_encode([]));
 }
 
-// ----------------------
-// Session timeout
-// ----------------------
-$session_timeout = 60; // 1 minute for testing
+$session_timeout = 60; 
 if (isset($_SESSION['ticketapp_session'], $_SESSION['last_activity'])) {
     if (time() - $_SESSION['last_activity'] > $session_timeout) {
         session_unset();
@@ -40,22 +34,14 @@ if (isset($_SESSION['ticketapp_session'])) {
     $_SESSION['last_activity'] = time();
 }
 
-// ----------------------
-// Twig setup
-// ----------------------
 require_once __DIR__ . '/../vendor/autoload.php';
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('session', $_SESSION);
 
-// ----------------------
-// Route handling
-// ----------------------
+
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// ----------------------
-// Signup
-// ----------------------
 if ($path === '/auth/signup') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email'] ?? '');
@@ -97,8 +83,6 @@ if ($path === '/auth/signup') {
             ]);
             exit;
         }
-
-        // Add new user
         $users[] = [
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT)
@@ -119,9 +103,7 @@ if ($path === '/auth/signup') {
     exit;
 }
 
-// ----------------------
-// Login
-// ----------------------
+
 if ($path === '/auth/login') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email'] ?? '');
@@ -167,9 +149,7 @@ if ($path === '/auth/login') {
     exit;
 }
 
-// ----------------------
-// Logout
-// ----------------------
+
 if ($path === '/logout') {
     session_unset();
     session_destroy();
@@ -182,9 +162,6 @@ if ($path === '/logout') {
     exit;
 }
 
-// ----------------------
-// Dashboard
-// ----------------------
 if ($path === '/dashboard') {
     if (!isset($_SESSION['ticketapp_session'])) {
         header('Location: /auth/login');
@@ -212,9 +189,6 @@ if ($path === '/dashboard') {
     exit;
 }
 
-// ----------------------
-// Tickets routes
-// ----------------------
 if (strpos($path, '/tickets') === 0) {
     if (!isset($_SESSION['ticketapp_session'])) {
         header('Location: /auth/login');
@@ -282,7 +256,4 @@ if (strpos($path, '/tickets') === 0) {
     exit;
 }
 
-// ----------------------
-// Landing page
-// ----------------------
 echo $twig->render('landing.html.twig');
