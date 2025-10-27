@@ -55,7 +55,7 @@ if ($path === '/auth/signup') {
             exit;
         }
 
-        $usersFile = __DIR__ . '/../data/users.json';
+        $usersFile = '/tmp/users.json';
         $users = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
 
         foreach ($users as $user) {
@@ -108,7 +108,7 @@ if ($path === '/auth/login') {
             exit;
         }
 
-        $usersFile = __DIR__ . '/../data/users.json';
+       $usersFile = '/tmp/users.json';
         $users = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
 
         $loggedIn = false;
@@ -192,7 +192,7 @@ if (strpos($path, '/tickets') === 0) {
         exit;
     }
 
-    $ticketsFile = __DIR__ . '/../data/tickets.json';
+    $usersFile = '/tmp/tickets.json';
     $tickets = file_exists($ticketsFile) ? json_decode(file_get_contents($ticketsFile), true) : [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
