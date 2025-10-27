@@ -131,7 +131,7 @@ footer {
   background: url('wave.svg') no-repeat bottom center;
   background-size: cover;
 }
-@media (min-width: 428px) {
+@media (min-width: 400px) {
     body {
     display: flex;
     flex-direction: column;
