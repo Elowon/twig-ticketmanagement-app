@@ -5,22 +5,25 @@ error_reporting(E_ALL);
 
 session_start();
 
+// ----------------------
+// Use /tmp for JSON files
+// ----------------------
+$usersFile = sys_get_temp_dir() . '/users.json';
+$ticketsFile = sys_get_temp_dir() . '/tickets.json';
 
-$usersFile = '/tmp/users.json';
-$usersFile = '/tmp/tickets.json';
-
+// Ensure the files exist
 if (!file_exists($usersFile)) {
     file_put_contents($usersFile, json_encode([]));
 }
-
 if (!file_exists($ticketsFile)) {
     file_put_contents($ticketsFile, json_encode([]));
 }
 
-
-$session_timeout = 1 * 60;
-
-if (isset($_SESSION['ticketapp_session']) && isset($_SESSION['last_activity'])) {
+// ----------------------
+// Session timeout
+// ----------------------
+$session_timeout = 60; // 1 minute for testing
+if (isset($_SESSION['ticketapp_session'], $_SESSION['last_activity'])) {
     if (time() - $_SESSION['last_activity'] > $session_timeout) {
         session_unset();
         session_destroy();
@@ -33,19 +36,26 @@ if (isset($_SESSION['ticketapp_session']) && isset($_SESSION['last_activity'])) 
         exit;
     }
 }
-
 if (isset($_SESSION['ticketapp_session'])) {
     $_SESSION['last_activity'] = time();
 }
 
+// ----------------------
+// Twig setup
+// ----------------------
 require_once __DIR__ . '/../vendor/autoload.php';
-
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('session', $_SESSION);
 
+// ----------------------
+// Route handling
+// ----------------------
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+// ----------------------
+// Signup
+// ----------------------
 if ($path === '/auth/signup') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email'] ?? '');
@@ -68,8 +78,7 @@ if ($path === '/auth/signup') {
             exit;
         }
 
-       
-        $users = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
+        $users = json_decode(file_get_contents($usersFile), true);
 
         foreach ($users as $user) {
             if ($user['email'] === $email) {
@@ -89,6 +98,7 @@ if ($path === '/auth/signup') {
             exit;
         }
 
+        // Add new user
         $users[] = [
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT)
@@ -109,6 +119,9 @@ if ($path === '/auth/signup') {
     exit;
 }
 
+// ----------------------
+// Login
+// ----------------------
 if ($path === '/auth/login') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email'] ?? '');
@@ -121,8 +134,7 @@ if ($path === '/auth/login') {
             exit;
         }
 
-       $usersFile = '/tmp/users.json';
-        $users = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
+        $users = json_decode(file_get_contents($usersFile), true);
 
         $loggedIn = false;
         foreach ($users as $user) {
@@ -151,38 +163,40 @@ if ($path === '/auth/login') {
 
     $toast = $_SESSION['toast'] ?? null;
     unset($_SESSION['toast']);
-
     echo $twig->render('auth/login.html.twig', ['toast' => $toast]);
     exit;
 }
 
-
+// ----------------------
+// Logout
+// ----------------------
 if ($path === '/logout') {
     session_unset();
     session_destroy();
     session_start();
     $_SESSION['toast'] = [
-        'message' => 'Youlogged out.',
+        'message' => 'You logged out.',
         'type' => 'success'
     ];
     header('Location: /auth/login');
     exit;
 }
 
+// ----------------------
+// Dashboard
+// ----------------------
 if ($path === '/dashboard') {
     if (!isset($_SESSION['ticketapp_session'])) {
         header('Location: /auth/login');
         exit;
     }
 
-    $ticketsFile = __DIR__ . '/../data/tickets.json';
-    $tickets = file_exists($ticketsFile) ? json_decode(file_get_contents($ticketsFile), true) : [];
+    $tickets = json_decode(file_get_contents($ticketsFile), true);
 
     $open = count(array_filter($tickets, fn($t) => isset($t['status']) && strtolower($t['status']) === 'open'));
     $in_progress = count(array_filter($tickets, fn($t) => isset($t['status']) && strtolower($t['status']) === 'in_progress'));
     $closed = count(array_filter($tickets, fn($t) => isset($t['status']) && strtolower($t['status']) === 'closed'));
     $total = count($tickets);
-
 
     $toast = $_SESSION['toast'] ?? null;
     unset($_SESSION['toast']);
@@ -198,15 +212,16 @@ if ($path === '/dashboard') {
     exit;
 }
 
-
+// ----------------------
+// Tickets routes
+// ----------------------
 if (strpos($path, '/tickets') === 0) {
     if (!isset($_SESSION['ticketapp_session'])) {
         header('Location: /auth/login');
         exit;
     }
 
-    
-    $tickets = file_exists($ticketsFile) ? json_decode(file_get_contents($ticketsFile), true) : [];
+    $tickets = json_decode(file_get_contents($ticketsFile), true);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'] ?? '';
@@ -267,4 +282,7 @@ if (strpos($path, '/tickets') === 0) {
     exit;
 }
 
+// ----------------------
+// Landing page
+// ----------------------
 echo $twig->render('landing.html.twig');
