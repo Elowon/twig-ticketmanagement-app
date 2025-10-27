@@ -1,6 +1,6 @@
 
 .navbar {
-    background-color: #1e3a8a; 
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
     color: #fff;
     font-family: Arial, sans-serif;
     position: fixed;   
@@ -110,6 +110,21 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+@media screen and (min-width: 400px) {
+    .nav-links {
+        display: none;
+    }
+    .nav-container {
+    padding: 0.3rem 0.3rem; 
+}
+    .hamburger {
+        display: flex;
+    }
+    .mobile-menu {
+        display: flex;
+        flex-direction: column;
+    }
+}
 
 @media screen and (max-width: 768px) {
     .nav-links {
