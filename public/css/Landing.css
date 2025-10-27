@@ -31,7 +31,7 @@ footer {
   padding: 15px 10px;
   font-size: 14px;
   color: white;
-  background: transparent; /* inherits page gradient */
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
 }
 
 .hero {
@@ -110,16 +110,16 @@ footer {
   width: 200px;
   height: 200px;
   background-color: #f87171;
-  top: -50px;    /* move further up */
-  left: -50px;   /* move further left */
+  top: -50px; 
+  left: -50px;  
 }
 
 .circle2 {
   width: 150px;
   height: 150px;
   background-color: #34d399;
-  bottom: 220px;  /* move further down */
-  right: 20px;    /* move further right */
+  bottom: 220px; 
+  right: 20px;   
 }
 
 .wave {
